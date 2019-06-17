@@ -219,39 +219,42 @@ Your video stream on __iSpy__ will no longer be working.  You can set up a secon
 The __p2pcam__ software in a mother-ship configured cloud camera uses a 
 file __/home/devParam.dat__ containing credentials for your wireless network.
 Because the file appears to be digitally signed, 
-editing it manually is futile.  So the trick we is to make sure __p2pcam__
-does not try to start the network.  We'll start it ourselves, with our 
+editing it manually is futile.  So the trick is to make sure __p2pcam__
+does not try to start the wireless network.  We'll start it ourselves, with our 
 own configuration.
 
 __p2pcam__ won't ordinarily try to bring up the wireless if the LAN
-connection is present. The command ``iwconfig`` will tell you
-something about the wireless configuration.
+connection is present. 
 
 Our next step is to create our 
 own wireless config file for our sandbox network - 
-we need its *ssid* and *password*.
+we need to provide its *ssid* and *password*.
 In folder `/home` there is a file 
 called `wpa_supplicant.conf.EYERD` 
-which you can copy like this: 
+which you can copy and modify like this: 
 ```
 cd /home
 cp wpa_supplicant.conf.EYERD myown.conf 
 ```
 
 Use `vi` to edit `myown.conf` and change credentials to 
-your own sandbox router's ssid and password.   
-Now in `start.sh` we 
-find a commented-out line that tells us how
-to get the wireless going.  You can try 
-this step by typing it manually at the command line:
+your own sandbox router's ssid and password. 
+  
+Now get the wireless going, first manually,
+by typing at the command line:
+
 ```
+iwconfig   # optional, if you want to see wireless status 
+
 wpa_supplicant -B -iwlan0 -c /home/myown.conf &
+
+iwconfig   # may take some seconds to connect and show changed status
 ```
 
-Then after a while your camera and the sandbox 
-router will have agreed to talk to each other and negotiated
-their encryption keys.  
-Now you can ask the router for a dhcp address on wlan0 like this: 
+Once your camera and the sandbox 
+router have agreed to talk to each other and negotiated
+their encryption keys, you can ask the router 
+for an IP address using dhcp on wlan0 like this: 
 ```
 udhcpc -i wlan0
 ```
@@ -259,9 +262,10 @@ udhcpc -i wlan0
 Now if all goes according to plan, you can open a second Windows 
 command window and ping the wireless IP (the one at `...237`).  
 Both the wired (at `...236`) and the wireless connection 
-should be responding independently.
+should now be responding independently.
 
-And of course, in __iSpy__ you can now collect two different RTSP streams from the camera simultaneously.  (Experiment with getting a low-res stream over wireless while you also get the hi-res stream over the wired connection.)
+And of course, in __iSpy__ you can now collect two different RTSP streams from the two
+different IP addresses simultaneously. (Experiment with getting a low-res stream over wireless while you also get the hi-res stream over the wired connection.)
 
 Now to make this automatic whenever the camera restarts, use __vi__ to add the following lines near the end of the __start.sh__ script, just before the last line that says `free`: 
 ```
@@ -285,11 +289,12 @@ and only then can we get the wireless going.   So if we don't want the
 pesky LAN cable, we need to fool it. 
  
 One way to do so is to use an *Ethernet Loopback Plug* which can plug into 
-the Ethernet connection on the camera.  Google it.  You can buy them or 
-make your own.  I simply cut an existing Ethernet cable in half, 
+the Ethernet connection on the camera.  (Google it, and look at the images.)
+You can buy them or make your own.  
+I simply cut an existing Ethernet cable in half, 
 found the correct colour wires to join up, and made a DIY loopback plug 
 from each end.  Images on Google show you which 
-pins need to be bridged to which other ones. 
+pins need to be bridged to which other ones.  
 
 Rebooting the camera now overcomes the need for a LAN connection, 
 but it still brings up the wireless connection.  
@@ -297,7 +302,7 @@ You should be able to view the streams at the wireless IP address
 using __iSpy__.  
 
 
-And, thankfully, we've never allowed the camera to connect to the Cloud.  
+And - whew! - we've never allowed the camera to connect to the Cloud.  
 
 ## A little monitoring 
 
@@ -403,11 +408,8 @@ https://github.com/edsub/Goke_GK7102
 
 
 You can also glean some information by looking through the file `/tmp/closelicamera.log` 
-```
-uname -a
-Linux localhost 3.4.43-gk #1 PREEMPT Thu Mar 15 14:45:27 CST 2018 armv6l GNU/Linux
 
-```
+
 The camera sensor (which is on the GK7102 camera board) defines the resolution.  Running
 `sensordetect` will show you interesting stuff before the camera resets itself!
 
@@ -421,7 +423,7 @@ find:gc1034 at 0x42
 ```
 The gc1034 sensor is described as `HD, 1280x720, 1/4", pixel size 3um, interface DVP/MIPI`  at http://www.gcoreinc.com/product1/show.php?lang=en&id=139 
 
-The camera board seems to be `GOKE 710S, BOARD 20190215` so it seems quite recent.  
+The camera board seems to be `GOKE 710S, BOARD 20190215` so this date seems quite recent.  
 
 ```
 more /etc/init.d/rcS
@@ -455,8 +457,8 @@ PORT     STATE SERVICE
 80/tcp   open  http
 554/tcp  open  rtsp
 843/tcp  open  unknown
-3201/tcp open  unknown
-5050/tcp open  mmcc        multimedia conference control tool
+3201/tcp open  monitor events occurring on the camera 
+5050/tcp open  multimedia conference control tool
 6670/tcp open  irc
 7101/tcp open  elcn
 7103/tcp open  unknown
