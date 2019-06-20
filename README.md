@@ -314,7 +314,7 @@ So in your PC command window (on the PC, not on the camera), attach to the strea
 curl 192.168.0.237:3201
 ```
 
-and watch some logging information.  Move in front of your camera, 
+and watch some logging information.  Move in front of your camera, s
 or create loud sounds to see motion and sound events from the camera.  
 
 You'll also notice the camera is creating a lot of failed attempts to get 
@@ -484,9 +484,51 @@ Also, process 363 is not running now. Neither do I see open ports at 5050.
 	Line 1623:  [363] [InLanPlay.cpp(234) UpdateAuthKey]Trace: AuthKey is: 108258
 	Line 1625:  [363] [InLanPlay.cpp(277) UpdateAuthKey]Trace: End___, Set timer(30 secs)
  ```
+## Bricking the camera
 
-Please let me know if you stumble across any documentation that will allow me to change the stream frame rate, or control the LEDs remotely, or speak back through the camera.
+I managed to brick one the cameras with a silly oversight.  
+I copied a modified but working ``start.sh`` from one 
+camera via an ftp site, to another.  I used ``ftpput`` from the source 
+camera, and then did ``ftpget`` from the target system to install it.  
+But it lost execute permissions along the way, 
+and I forgot to set them again.  So it probably boots 
+and then isn't able to run ``start.sh``, 
+and I can't find a way to connect to it. 
+
+Can I find any place to attach a tty? 
+
+## What's inside the housing?
+
+Here are a couple of photos.  The camera build quality looks great.
+But it is hard to photograph, as there are three stacked boards, with the most
+important one being inaccessible, at the bottom.  So until I am willing to
+pull the layers apart, I won't get better photos. 
+ 
+![CameraPic](images/Pull_it_apart.jpg "pullng it apart")
+
+Three stacked boards:
+
+![CameraPic](images/Three_layers.jpg "Three layers")
+
+The top layer has the SDXC reader, an intruiging push-switch 
+(I tried booting while holding the switch, etc.) and a two-pin header.
+I wonder if the switch might make the camera boot from an image on the SD card?
+
+![CameraPic](images/Top_layer.jpg "Top layer")
+
+The middle layer looks like power conditioning and some stuff that
+makes the "click" sounds when the LED and infrared lights turn on and off.
+![CameraPic](images/Middle_layer.jpg "Middle layer")
+
+The lowest layer board has an SoC called GOKE7102C, and some other stuff that 
+I can't easily see.  
+![CameraPic](images/Lowest_layer.jpg "Lowest layer")
+
+
+## Help?
+
+Please let me know if you stumble across anything that will allow me to change the stream frame rate, or control the LEDs remotely, or speak back through the camera, or unbrick my bricked camera. 
  
 
-*Last Revision 17 June 2019*  
+*Last Revision 20 June 2019*  
 mailto:cspwcspw@gmail.com 
