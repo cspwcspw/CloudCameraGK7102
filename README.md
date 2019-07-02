@@ -383,6 +383,24 @@ curl -v --output snapshot.png 192.168.0.237:554/snapshot
 
 Untested: prevent the camera from becoming an access point by changing the line in `/home/hwcfg.ini`
 
+## General Observations
+
+Using the camera off-line or in pure LAN-connected mode delivers 
+good streams, but lack of control of the camera is an issue. In a field test it seems too sensitive to its three different
+lighting modes.  Each time it switches on the daylight LEDs or 
+removes and inserts the daylight filters, the image changes dramatically,
+and the ```iSpy``` software sees that as motion detection.   
+
+Also, ```iSpy``` lets me define regions of interest for triggering
+motion detection.  But without knowing how to set similar regions
+on the camera, I'm getting too many daylight / night filter switches.
+
+I believe there are some settings in the configuration that I can still
+explore, for example if I give it the wrong GPIO pin for the LEDs I can 
+probably disable the mechanism.  And there are some sensitivity settings,
+etc. that might help turn the camera back into a "just deliver your stream,
+switch off your own AI".
+
 ## Specifications
 
 An unbranded camera!  But it is made up of hardware, firmware, etc,
@@ -501,8 +519,7 @@ Can I find any place to attach a tty?
 
 Here are a couple of photos.  The camera build quality looks great.
 But it is hard to photograph, as there are three stacked boards, with the most
-important one being inaccessible, at the bottom.  So until I am willing to
-pull the layers apart, I won't get better photos. 
+important one being inaccessible, at the bottom.  
  
 ![CameraPic](images/Pull_it_apart.jpg "pullng it apart")
 
@@ -510,9 +527,11 @@ Three stacked boards:
 
 ![CameraPic](images/Three_layers.jpg "Three layers")
 
-The top layer has the SDXC reader, an intruiging push-switch 
+The top layer has the SDXC reader, an intriguing push-switch 
 (I tried booting while holding the switch, etc.) and a two-pin header.
-I wonder if the switch might make the camera boot from an image on the SD card?
+I wonder if the switch might make the camera boot from an image 
+on the SD card?  I tried to boot with a Raspberry PI SD card, but
+to no avail.   
 
 ![CameraPic](images/Top_layer.jpg "Top layer")
 
@@ -520,15 +539,24 @@ The middle layer looks like power conditioning and some stuff that
 makes the "click" sounds when the LED and infrared lights turn on and off.
 ![CameraPic](images/Middle_layer.jpg "Middle layer")
 
-The lowest layer board has an SoC called GOKE7102C, and some other stuff that 
-I can't easily see.  
+The lowest layer board has an SoC called GOKE7102C.  It also contains a 
+TMS1102NL which is apparently a magnet isolation and interference suppression
+device for 10Base-T Ethernet.  There is also the green wireless daughterboard 
+with the bright yellow antenna plug. 
+
 ![CameraPic](images/Lowest_layer.jpg "Lowest layer")
 
 
 ## Help?
 
-Please let me know if you stumble across anything that will allow me to change the stream frame rate, or control the LEDs remotely, or speak back through the camera, or unbrick my bricked camera. 
+Please let me know if you stumble across anything that will allow me to 
+control the PSPCamera hardware: change the stream frame rate, 
+control the LEDs remotely, set regions of interest for motion 
+detection, or speak back through the camera. 
+
+Or if you find a serial console connection, let me know where and I'll
+attempt to unbrick my bricked camera. 
  
 
-*Last Revision 20 June 2019*  
+*Last Revision 2 July 2019*  
 mailto:cspwcspw@gmail.com 
