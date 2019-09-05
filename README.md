@@ -1,4 +1,4 @@
-# Hacking my GK7102 Cloud Camera (in progress) 
+# Hacking my GK7102 Cloud Cameras (in progress) 
 
 *_A cheap cloud camera, and my workarounds to close security holes_*
 
@@ -143,6 +143,13 @@ to log on as __root__ we have cracked the main security hurdle.
 I use [PuTTy](https://www.putty.org/) on my Windows machine for Telnet sessions. 
 If you get a login screen, great, it means the camera is running a 
 server to allow remote sessions. 
+
+I subsequently got a few more cameras, they came very 
+slightly modified. The newer ones only
+have two leads out the back: LAN and power.  There is no reset 
+button like the earlier cameras. Additionally, in some situations it 
+seems necessary to activate a video stream from the camera before 
+the __telnet login__ will work. 
 
 If __root__ with password __cxlinux__ works, you are in!  Here are 
 some [other credentials you can try](https://ipvm.com/reports/ip-cameras-default-passwords-directory).
@@ -386,7 +393,8 @@ Untested: prevent the camera from becoming an access point by changing the line 
 ## General Observations
 
 Using the camera off-line or in pure LAN-connected mode delivers 
-good streams, but lack of control of the camera is an issue. In a field test it seems too sensitive to its three different
+good streams, but lack of control of the camera is an issue. In a 
+field test it seems too sensitive to its three different
 lighting modes.  Each time it switches on the daylight LEDs or 
 removes and inserts the daylight filters, the image changes dramatically,
 and the ```iSpy``` software sees that as motion detection.   
@@ -400,6 +408,16 @@ explore, for example if I give it the wrong GPIO pin for the LEDs I can
 probably disable the mechanism.  And there are some sensitivity settings,
 etc. that might help turn the camera back into a "just deliver your stream,
 switch off your own AI".
+
+With the camera offline on a local LAN, the monitor stream at port 3201 
+shows the message ```sync time failed``` approximately once per second.   
+This coincides with the camera delivering a "dirty" image in the 
+stream - visually noticeable. 
+Everything appears a bit more blurry than normal 
+(perhaps fewer bits weere used to compress the frame?).  
+In ```iSpy``` it can be highlighted by not suppressing noise, and showing 
+where ```iSpy``` has detected motion. 
+
 
 ## Specifications
 
@@ -558,5 +576,5 @@ Or if you find a serial console connection, let me know where and I'll
 attempt to unbrick my bricked camera. 
  
 
-*Last Revision 2 July 2019*  
+*Last Revision 5 September 2019*  
 mailto:cspwcspw@gmail.com 
