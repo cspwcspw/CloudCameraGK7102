@@ -533,6 +533,22 @@ and I can't find a way to connect to it.
 
 Can I find any place to attach a tty? 
 
+Yay! I got it unbricked. xxx and yyy identified what seemed to 
+be serial port pads. I read 
+http://www.devttys0.com/2012/11/reverse-engineering-serial-ports/   
+and yes, was 
+able to connect via a USB to Serial adapter to my laptop, and use
+PuTTy to log in as root and fix my broken permissions.  So the 
+camera is now unbricked. Thanks, guys!
+
+The pin mapping and the baudrate setting are overlayed in the pics below.
+
+With the additional serial port breakout on this camera I've put it
+on my desk as my "test more ideas" camera.  Watching the console at
+boot and initialization time gives me more information than I can
+get otherwise.
+
+
 ## What's inside the housing?
 
 Here are a couple of photos.  The camera build quality looks great.
@@ -572,9 +588,5 @@ control the PSPCamera hardware: change the stream frame rate,
 control the LEDs remotely, set regions of interest for motion 
 detection, or speak back through the camera. 
 
-Or if you find a serial console connection, let me know where and I'll
-attempt to unbrick my bricked camera. 
- 
-
-*Last Revision 5 September 2019*  
+*Last Revision 10 September 2019*  
 mailto:cspwcspw@gmail.com 
