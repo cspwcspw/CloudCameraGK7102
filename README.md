@@ -533,8 +533,8 @@ and I can't find a way to connect to it.
 
 Can I find any place to attach a tty? 
 
-Yay! I got it unbricked. xxx and yyy identified what seemed to 
-be serial port pads. I read 
+Yay! I got it unbricked. wyatt303 and TimelessNL identified what 
+they thought were serial port pads. I read 
 http://www.devttys0.com/2012/11/reverse-engineering-serial-ports/   
 and yes, was 
 able to connect via a USB to Serial adapter to my laptop, and use
